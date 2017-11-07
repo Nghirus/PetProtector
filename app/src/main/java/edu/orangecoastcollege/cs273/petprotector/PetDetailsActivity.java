@@ -7,8 +7,16 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * This activity takes the data from the PetListActivity and displays the information about the
+ * clicked item.
+ */
 public class PetDetailsActivity extends AppCompatActivity {
 
+    /**
+     * Makes the view's visible
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

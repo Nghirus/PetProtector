@@ -17,11 +17,15 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This is the PetActivity that will load when the app starts. User will have the option to enter
+ * the pet's detail and then add it to a scrolling list at the bottom. User can click the item on
+ * the list to get more details about a pet.
+ */
 public class PetListActivity extends AppCompatActivity {
 
     private ImageView mPetImageView;
@@ -37,6 +41,11 @@ public class PetListActivity extends AppCompatActivity {
     //Constants for permissions:
     private static final int GRANTED = PackageManager.PERMISSION_GRANTED;
     private static final int DENIED = PackageManager.PERMISSION_DENIED;
+
+    /**
+     * This is called when the app ios loaded, and makes the view visible to the user.
+     * @param savedInstanceState the current view
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,15 +62,22 @@ public class PetListActivity extends AppCompatActivity {
 
         this.deleteDatabase(DBHelper.DATABASE_NAME);
         db = new DBHelper(this);
-        db.addPet(new Pet("Dog", "A random dog on the street", "7148222222",imageUri.toString()));
-        db.addPet(new Pet("Cat", "Keeps coming for food", "7148222222",imageUri.toString()));
-        db.addPet(new Pet("Rabbit", "Tiny Rabbit in the backyard", "7148222222",imageUri.toString()));
-        db.addPet(new Pet("Spider", "Spider near my desk", "7148222222",imageUri.toString()));
+//        db.addPet(new Pet("Dog", "A random dog on the street", "7148222222",imageUri.toString()));
+//        db.addPet(new Pet("Cat", "Keeps coming for food", "7148222222",imageUri.toString()));
+//        db.addPet(new Pet("Rabbit", "Tiny Rabbit in the backyard", "7148222222",imageUri.toString()));
+//        db.addPet(new Pet("Spider", "Spider near my desk", "7148222222",imageUri.toString()));
         mPetList = db.getAllPets();
 
         mPetListAdaptor = new PetListAdaptor(this,R.layout.pet_list_item, mPetList);
         petListView.setAdapter(mPetListAdaptor);
         petListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /**
+             * This is the onclick listener to find out where the user clicked in the item
+             * @param adapterView unused
+             * @param view the current view
+             * @param position the position of the item clicked
+             * @param l unused
+             */
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Pet selectedPet = mPetList.get(position);
@@ -83,6 +99,12 @@ public class PetListActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This function will get a URI from a resource file
+     * @param context where the current resource is located
+     * @param resID the R id for the resource file
+     * @return
+     */
     public static Uri getUriFromResource(Context context, int resID)
     {
         Resources res = context.getResources();
@@ -97,6 +119,11 @@ public class PetListActivity extends AppCompatActivity {
         return Uri.parse(uri);
     }
 
+    /**
+     * Will ask for permissions for gallery and camera
+     * Then ask user to select an image to load
+     * @param v the current view
+     */
     public void selectPetImage(View v)
     {
         List<String> permList = new ArrayList<>();
@@ -131,6 +158,13 @@ public class PetListActivity extends AppCompatActivity {
             }
     }
 
+    /**
+     * If then user selects an image, and does not click the back button This function will generate
+     * the new image to display, and a new URI
+     * @param requestCode request code generated from selectPetImage
+     * @param resultCode the result of the request
+     * @param data the intent
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -143,6 +177,11 @@ public class PetListActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Takes the user's input from the Edit Texts and Imageview and create a new pet to add to the
+     * database and list.
+     * @param v the current view
+     */
     public void addPet(View v)
     {
         String name = mNameEditText.getText().toString();

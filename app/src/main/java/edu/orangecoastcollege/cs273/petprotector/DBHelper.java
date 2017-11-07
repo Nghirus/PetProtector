@@ -8,6 +8,9 @@ package edu.orangecoastcollege.cs273.petprotector;
 
         import java.util.ArrayList;
 
+/**
+ * DBHelper class to handle SQLite functions within the program
+ */
 class DBHelper extends SQLiteOpenHelper {
 
     //TASK 1: DEFINE THE DATABASE VERSION, NAME AND TABLE NAME
@@ -26,10 +29,18 @@ class DBHelper extends SQLiteOpenHelper {
             ,FIELD_PHONE};
 
 
+    /**
+     * Creates a new database
+     * @param context the current activity
+     */
     public DBHelper(Context context){
         super (context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Creates a new table
+     * @param database the current database loaded
+     */
     @Override
     public void onCreate (SQLiteDatabase database){
 
@@ -46,6 +57,12 @@ class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * If the new version exist, delete old table, and make new table
+     * @param database current database
+     * @param oldVersion old version
+     * @param newVersion new version
+     */
     @Override
     public void onUpgrade(SQLiteDatabase database,
                           int oldVersion,
@@ -63,6 +80,10 @@ class DBHelper extends SQLiteOpenHelper {
 
     //********** DATABASE OPERATIONS:  ADD, GETALL
 
+    /**
+     * Add a pet to the database
+     * @param pet the Pet object to be added
+     */
     public void addPet(Pet pet) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -78,18 +99,16 @@ class DBHelper extends SQLiteOpenHelper {
         // TODO:  Return the id assigned by the database
     }
 
+    /**
+     * returns a list with all the database items
+     * @return the newly created list
+     */
     public ArrayList<Pet> getAllPets() {
         ArrayList<Pet> petList = new ArrayList<>();
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.query(DATABASE_TABLE,FIELD_ARRAY,null,null,null,null,null);
         cursor.moveToFirst();
 
-//        if (cursor.isFirst())
-//            do {
-//                College college = new College(cursor.getInt(0),cursor.getString(1),cursor.getInt(2)
-//                , cursor.getDouble(3),cursor.getDouble(4),cursor.getString(5));
-//                collegeList.add(college);
-//            }while(cursor.moveToNext());
 
         while (!cursor.isAfterLast())
         {
